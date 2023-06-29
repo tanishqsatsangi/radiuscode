@@ -2,12 +2,17 @@ package com.project.radiusagentassignment.workmangers
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.project.radiusagentassignment.DatabaseHelper
 import com.project.radiusagentassignment.models.FacilitiesAPIModel
 import com.project.radiusagentassignment.retrofit.fetchers.FetcherFactory
 import com.project.radiusagentassignment.retrofit.fetchers.ResponseListener
 import retrofit2.Response
 
-class SyncWorker(private val appContext: Context) : CoroutineWorker(appContext) {
+class SyncWorker(
+    private val appContext: Context,
+    params: WorkerParameters
+) : CoroutineWorker(appContext, params) {
     override suspend fun doWork(): Result {
         try {
             val fetcher = FetcherFactory<FacilitiesAPIModel>().getFetcher()
@@ -16,8 +21,9 @@ class SyncWorker(private val appContext: Context) : CoroutineWorker(appContext) 
                     if (response.errorBody() != null || !response.isSuccessful) {
                         return
                     }
-                    //save data to db
-
+                    // save data to DB
+                    val databaseHelper = DatabaseHelper(appContext, null)
+                    databaseHelper.saveList(response.body())
                 }
 
             })

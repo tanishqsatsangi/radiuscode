@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.radiusagentassignment.adapters.FacilitiesRecyclerViewAdapter
 import com.project.radiusagentassignment.coontracts.ListFragmentContract
 import com.project.radiusagentassignment.databinding.FragmentListBinding
+import com.project.radiusagentassignment.models.BaseFacilitiesItem
 import com.project.radiusagentassignment.presenters.FacilitiesListPresenter
 import com.project.radiusagentassignment.repositories.FacilitiesListRepository
 
@@ -44,7 +46,14 @@ class ListFragment : Fragment(), ListFragmentContract.View {
         fun newInstance() = ListFragment()
     }
 
-    override fun displayData() {
+    override fun displayData(baseFacilitiesItem: BaseFacilitiesItem) {
+        val recyclerViewAdapter = FacilitiesRecyclerViewAdapter(mContext, baseFacilitiesItem)
+        binding.listRecyclerview.layoutManager = LinearLayoutManager(mContext)
+        binding.listRecyclerview.adapter = recyclerViewAdapter
+    }
+
+    override fun showErrorView() {
+
     }
 
     override fun showHideLoader(isShow: Boolean) {

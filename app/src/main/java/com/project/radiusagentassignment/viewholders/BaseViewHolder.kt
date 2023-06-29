@@ -6,5 +6,5 @@ import androidx.recyclerview.widget.RecyclerView
 import com.project.radiusagentassignment.fields.BaseField
 
 abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    abstract fun onBind(context: Context, position: Int, baseField: BaseField)
+    abstract fun onBind(context: Context, position: Int, baseField: BaseField?)
 }

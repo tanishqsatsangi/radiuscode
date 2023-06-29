@@ -1,6 +1,7 @@
 package com.project.radiusagentassignment.repositories
 
 import android.content.Context
+import com.project.radiusagentassignment.DatabaseHelper
 import com.project.radiusagentassignment.coontracts.ListFragmentContract
 import com.project.radiusagentassignment.models.FacilitiesAPIModel
 import com.project.radiusagentassignment.retrofit.fetchers.Fetcher
@@ -15,10 +16,21 @@ class FacilitiesListRepository() : ListFragmentContract.Model,
         context: Context,
         onDataFetchedListener: ListFragmentContract.Model.OnDataFetchedListener
     ) {
-        dataFetchedListener = onDataFetchedListener
-        // fethc ressult from DB if not then fetch from API
-        val fetcher: Fetcher<FacilitiesAPIModel> = FetcherFactory<FacilitiesAPIModel>().getFetcher()
-        fetcher.fetch(context, this)
+        //fetch result from DB
+        val databaseHelper = DatabaseHelper(context, null)
+        val apiModel = databaseHelper.getList()
+        if (apiModel == null) {
+            //no data in DB fetch from API
+            dataFetchedListener = onDataFetchedListener
+            val fetcher: Fetcher<FacilitiesAPIModel> =
+                FetcherFactory<FacilitiesAPIModel>().getFetcher()
+            fetcher.fetch(context, this)
+        } else {
+            //return db result only
+            dataFetchedListener?.onDataFetched(apiModel)
+        }
+
+
     }
 
     override fun getListFromAdapter() {
@@ -26,11 +38,11 @@ class FacilitiesListRepository() : ListFragmentContract.Model,
     }
 
     override fun onResponseFetched(response: Response<FacilitiesAPIModel>) {
-        saveFetchedResposneToDB()
-        dataFetchedListener?.onDataFetched(response)
+        saveFetchedResponseToDB()
+        dataFetchedListener?.onDataFetched(response.body())
     }
 
-    private fun saveFetchedResposneToDB() {
+    private fun saveFetchedResponseToDB() {
         // to save response to db
     }
 }

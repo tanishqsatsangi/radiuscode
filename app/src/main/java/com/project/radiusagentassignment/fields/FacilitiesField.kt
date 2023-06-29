@@ -1,7 +1,8 @@
 package com.project.radiusagentassignment.fields
 
-import com.project.radiusagentassignment.fields.BaseField
+import com.project.radiusagentassignment.models.Option
 
-class LabelField: BaseField() {
+class FacilitiesField : BaseField() {
+    var optionList: ArrayList<Option> = arrayListOf()
 
 }

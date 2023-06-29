@@ -4,7 +4,6 @@ import android.content.Context
 import com.project.radiusagentassignment.adapters.FacilitiesAdapterFactory
 import com.project.radiusagentassignment.coontracts.ListFragmentContract
 import com.project.radiusagentassignment.models.FacilitiesAPIModel
-import retrofit2.Response
 
 class FacilitiesListPresenter constructor(
     val context: Context,
@@ -21,9 +20,17 @@ class FacilitiesListPresenter constructor(
         model.fetchData(context, this)
     }
 
-    override fun onDataFetched(response: Response<FacilitiesAPIModel>) {
+    override fun onDataFetched(response: FacilitiesAPIModel?) {
         val adapter = FacilitiesAdapterFactory().getAdapter();
-        adapter.getAdaptedList(context, response.body())
+        val baseFacilitiesItem = adapter.getAdaptedList(context, response)
+        if (baseFacilitiesItem == null) {
+            //show error on UI
+        }
+        baseFacilitiesItem?.let {
+            listFragmentContractView.showHideLoader(false)
+            listFragmentContractView.displayData(it)
+
+        }
 
     }
 }

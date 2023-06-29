@@ -1,20 +1,22 @@
 package com.project.radiusagentassignment.coontracts
 
 import android.content.Context
+import com.project.radiusagentassignment.models.BaseFacilitiesItem
 import com.project.radiusagentassignment.models.FacilitiesAPIModel
-import retrofit2.Response
 
 interface ListFragmentContract {
 
-    interface  View{
-        fun  displayData()
+    interface View {
+        fun displayData(baseFacilitiesItem: BaseFacilitiesItem)
 
-        fun showHideLoader(isShow:Boolean)
+        fun showErrorView()
+
+        fun showHideLoader(isShow: Boolean)
 
         fun showHideList(isShow: Boolean)
     }
 
-    interface  Presenter{
+    interface Presenter {
 
         fun onItemClick()
 
@@ -22,12 +24,12 @@ interface ListFragmentContract {
 
     }
 
-    interface Model{
-        interface  OnDataFetchedListener{
-            fun onDataFetched(response:Response<FacilitiesAPIModel>)
+    interface Model {
+        interface OnDataFetchedListener {
+            fun onDataFetched(response: FacilitiesAPIModel?)
         }
 
-        fun fetchData(context: Context,onDataFetchedListener: OnDataFetchedListener)
+        fun fetchData(context: Context, onDataFetchedListener: OnDataFetchedListener)
         fun getListFromAdapter()
 
     }
