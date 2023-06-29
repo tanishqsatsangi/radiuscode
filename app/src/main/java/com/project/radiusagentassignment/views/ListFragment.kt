@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.radiusagentassignment.ItemClickListener
 import com.project.radiusagentassignment.adapters.FacilitiesRecyclerViewAdapter
 import com.project.radiusagentassignment.coontracts.ListFragmentContract
 import com.project.radiusagentassignment.databinding.FragmentListBinding
@@ -15,7 +16,7 @@ import com.project.radiusagentassignment.presenters.FacilitiesListPresenter
 import com.project.radiusagentassignment.repositories.FacilitiesListRepository
 
 
-class ListFragment : Fragment(), ListFragmentContract.View {
+class ListFragment : Fragment(), ListFragmentContract.View, ItemClickListener {
 
     private lateinit var binding: FragmentListBinding
     private lateinit var mContext: Context
@@ -47,13 +48,15 @@ class ListFragment : Fragment(), ListFragmentContract.View {
     }
 
     override fun displayData(baseFacilitiesItem: BaseFacilitiesItem) {
-        val recyclerViewAdapter = FacilitiesRecyclerViewAdapter(mContext, baseFacilitiesItem)
+        val recyclerViewAdapter = FacilitiesRecyclerViewAdapter(mContext, baseFacilitiesItem, this)
         binding.listRecyclerview.layoutManager = LinearLayoutManager(mContext)
         binding.listRecyclerview.adapter = recyclerViewAdapter
     }
 
     override fun showErrorView() {
-
+        showHideList(false)
+        showHideLoader(false)
+        binding.noDataFoundTv.visibility = View.VISIBLE
     }
 
     override fun showHideLoader(isShow: Boolean) {
@@ -65,10 +68,15 @@ class ListFragment : Fragment(), ListFragmentContract.View {
     }
 
     override fun showHideList(isShow: Boolean) {
+        if (isShow) {
+            binding.listRecyclerview.visibility = View.VISIBLE
+        } else {
+            binding.listRecyclerview.visibility = View.GONE
+        }
 
     }
 
-    private fun initRecyclerView() {
-        binding.listRecyclerview.layoutManager = LinearLayoutManager(mContext)
+    override fun onItemClicked(id: String?) {
+        presenter?.onItemClick(id)
     }
 }

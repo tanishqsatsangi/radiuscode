@@ -18,7 +18,7 @@ interface ListFragmentContract {
 
     interface Presenter {
 
-        fun onItemClick()
+        fun onItemClick(id: String?)
 
         fun onLoadData()
 
@@ -30,7 +30,6 @@ interface ListFragmentContract {
         }
 
         fun fetchData(context: Context, onDataFetchedListener: OnDataFetchedListener)
-        fun getListFromAdapter()
 
     }
 }

@@ -12,10 +12,12 @@ import retrofit2.Response
 class FacilitiesListRepository() : ListFragmentContract.Model,
     ResponseListener<FacilitiesAPIModel> {
     private var dataFetchedListener: ListFragmentContract.Model.OnDataFetchedListener? = null
+    private var mContext: Context? = null
     override fun fetchData(
         context: Context,
         onDataFetchedListener: ListFragmentContract.Model.OnDataFetchedListener
     ) {
+        mContext = context
         //fetch result from DB
         val databaseHelper = DatabaseHelper(context, null)
         val apiModel = databaseHelper.getList()
@@ -29,20 +31,19 @@ class FacilitiesListRepository() : ListFragmentContract.Model,
             //return db result only
             dataFetchedListener?.onDataFetched(apiModel)
         }
-
-
-    }
-
-    override fun getListFromAdapter() {
-
     }
 
     override fun onResponseFetched(response: Response<FacilitiesAPIModel>) {
-        saveFetchedResponseToDB()
+        saveFetchedResponseToDB(response)
         dataFetchedListener?.onDataFetched(response.body())
     }
 
-    private fun saveFetchedResponseToDB() {
+    private fun saveFetchedResponseToDB(response: Response<FacilitiesAPIModel>) {
         // to save response to db
+        if (mContext == null) {
+            return
+        }
+        val databaseHelper = DatabaseHelper(mContext!!, null)
+        databaseHelper.saveList(response.body())
     }
 }
