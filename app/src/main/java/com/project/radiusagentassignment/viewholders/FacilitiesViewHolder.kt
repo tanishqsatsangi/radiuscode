@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.RadioButton
+import androidx.core.view.marginLeft
 import com.project.radiusagentassignment.ItemClickListener
 import com.project.radiusagentassignment.R
 import com.project.radiusagentassignment.databinding.LabelLayoutBinding
@@ -45,18 +46,6 @@ class FacilitiesViewHolder(private val binding: LabelLayoutBinding) : BaseViewHo
             optionRadioButton.tag = option.id
             optionRadioButton.text = option.name
             val idImage = option.icon?.let { getImageDrawable(it) }
-//            idImage?.let {
-//                if (it == -1) {
-//                    return
-//                }
-//                optionRadioButton.setCompoundDrawables(
-//                    null,
-//                    null,
-//                    AppCompatResources.getDrawable(context, it),
-//                    null
-//                )
-//            }
-            //  idImage?.let { optionRadioButton.setCompoundDrawablesWithIntrinsicBounds(it, 0, 0, 0) };
             val img: Drawable = context.resources.getDrawable(idImage!!)
             img.setBounds(0, 0, 60, 60)
             optionRadioButton.setCompoundDrawables(img, null, null, null)

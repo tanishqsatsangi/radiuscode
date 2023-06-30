@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,12 +13,12 @@
 
         <TextView
             android:id="@+id/label_tv"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="6dp"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="test"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <RadioGroup
             android:id="@+id/radio_group"
